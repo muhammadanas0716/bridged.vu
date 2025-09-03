@@ -1,0 +1,27 @@
+{
+  "name": "founderdiary.io",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.31.8",
+    "@tailwindcss/postcss": "^4.1.12",
+    "framer-motion": "^12.23.12",
+    "next": "latest",
+    "postcss": "^8.5.6",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "eslint": "latest",
+    "eslint-config-next": "latest",
+    "tailwindcss": "^4.1.12",
+    "typescript": "latest"
+  }
+}
