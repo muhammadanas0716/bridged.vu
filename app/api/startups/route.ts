@@ -78,9 +78,28 @@ export async function PATCH(req: NextRequest) {
     const owned = (await sql`SELECT 1 FROM startups WHERE id = ${id} AND user_id = ${user.id} LIMIT 1;`) as any[];
     if (owned.length === 0) return NextResponse.json({ error: "Not found or not allowed" }, { status: 404 });
 
+    // Fetch current to check slug changes
+    const currentRows = (await sql`SELECT slug FROM startups WHERE id = ${id} LIMIT 1;`) as any[];
+    const currentSlug: string = currentRows[0]?.slug;
+
     const fields: string[] = [];
     const values: any[] = [];
-    if (typeof body.name === 'string') { fields.push('name'); values.push(body.name); }
+    let newSlug: string | null = null;
+    if (typeof body.name === 'string') {
+      fields.push('name'); values.push(body.name);
+      // compute slug from name
+      const base = body.name.toString().toLowerCase().trim().replace(/[^a-z0-9\s-]/g, "").replace(/[\s-]+/g, "-").replace(/^-+|-+$/g, "") || 'startup';
+      // ensure unique
+      let candidate = base; let i = 1;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const exists = await sql`SELECT 1 FROM startups WHERE slug = ${candidate} AND id <> ${id} LIMIT 1;` as any[];
+        if (!exists.length) break; candidate = `${base}-${++i}`;
+      }
+      if (candidate !== currentSlug) {
+        newSlug = candidate; fields.push('slug'); values.push(candidate);
+      }
+    }
     if (typeof body.description === 'string') { fields.push('description'); values.push(body.description); }
     if (typeof body.website_url === 'string') { fields.push('website_url'); values.push(body.website_url); }
     if (typeof body.logo_url === 'string') { fields.push('logo_url'); values.push(body.logo_url); }
@@ -91,6 +110,9 @@ export async function PATCH(req: NextRequest) {
     const setSql = fields.map((f, idx) => `${f} = $${idx + 1}`).join(', ');
     const query = `UPDATE startups SET ${setSql} WHERE id = $${fields.length + 1} RETURNING *;`;
     const rows = await (sql as any).unsafe(query, [...values, id]);
+    if (newSlug && currentSlug && newSlug !== currentSlug) {
+      await sql`INSERT INTO startup_slug_redirects (slug, startup_id) VALUES (${currentSlug}, ${id}) ON CONFLICT (slug) DO NOTHING;`;
+    }
     return NextResponse.json({ startup: rows[0] });
   } catch (err) {
     console.error("PATCH /api/startups error", err);

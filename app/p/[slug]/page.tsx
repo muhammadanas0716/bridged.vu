@@ -1,6 +1,8 @@
 import { ensureSchema, sql } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import UpvoteButton from "./ui/UpvoteButton";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export default async function StartupPage({ params }: { params: Promise<{ slug: string }> }) {
   await ensureSchema();
@@ -16,8 +18,16 @@ export default async function StartupPage({ params }: { params: Promise<{ slug: 
     WHERE s.slug = ${slug}
     LIMIT 1;
   `) as any[];
-  const startup = startups[0];
+  let startup = startups[0];
   if (!startup) {
+    // Check redirect slugs table and 301 if needed
+    const rows = (await sql`SELECT startup_id FROM startup_slug_redirects WHERE slug = ${slug} LIMIT 1;`) as any[];
+    if (rows.length) {
+      const s = (await sql`SELECT * FROM startups WHERE id = ${rows[0].startup_id} LIMIT 1;`) as any[];
+      if (s.length) {
+        redirect(`/p/${s[0].slug}`);
+      }
+    }
     return <div className="py-12">Startup not found</div>;
   }
 
@@ -38,6 +48,15 @@ export default async function StartupPage({ params }: { params: Promise<{ slug: 
               </a>
             </p>
           )}
+          <nav className="mt-2 text-xs text-neutral-700" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1">
+              <li><a className="hover:underline" href="/">Home</a></li>
+              <li aria-hidden>›</li>
+              <li><a className="hover:underline" href="/p">Projects</a></li>
+              <li aria-hidden>›</li>
+              <li aria-current="page">{startup.slug}</li>
+            </ol>
+          </nav>
         </div>
         <UpvoteButton targetType="startup" targetId={startup.id} initialCount={startup.upvotes} disabled={!user} />
       </div>
@@ -58,4 +77,33 @@ export default async function StartupPage({ params }: { params: Promise<{ slug: 
       </div>
     </div>
   );
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  await ensureSchema();
+  const rows = (await sql`SELECT name, description, slug, logo_url FROM startups WHERE slug = ${slug} LIMIT 1;`) as any[];
+  if (!rows.length) return { title: `Project not found`, description: `The project you are looking for does not exist.`, alternates: { canonical: `/p/${slug}` } };
+  const s = rows[0];
+  const title = `${s.name}`;
+  const desc = (s.description || '').toString().slice(0, 150) || `Updates and progress for ${s.name}`;
+  const image = s.logo_url || '/logo.png';
+  return {
+    title,
+    description: desc,
+    alternates: { canonical: `/p/${s.slug}` },
+    openGraph: {
+      title,
+      description: desc,
+      url: `/p/${s.slug}`,
+      images: [{ url: image }],
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: desc,
+      images: [image],
+    },
+  };
 }

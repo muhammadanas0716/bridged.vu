@@ -1,6 +1,7 @@
 import { ensureSchema, sql } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import FollowButton from "./ui/FollowButton";
+import type { Metadata } from "next";
 
 export default async function UserPage({ params }: { params: Promise<{ handle: string }> }) {
   await ensureSchema();
@@ -27,6 +28,13 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
         <div>
           <h1 className="text-2xl font-semibold">{profile.name || profile.handle}</h1>
           <p className="text-neutral-800/80">@{profile.handle}</p>
+          <nav className="mt-2 text-xs text-neutral-700" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-1">
+              <li><a className="hover:underline" href="/">Home</a></li>
+              <li aria-hidden>›</li>
+              <li aria-current="page">@{profile.handle}</li>
+            </ol>
+          </nav>
         </div>
         <FollowButton profileId={profile.id} disabled={!viewer || viewer.id === profile.id} />
       </div>
@@ -57,4 +65,26 @@ export default async function UserPage({ params }: { params: Promise<{ handle: s
       </div>
     </div>
   );
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ handle: string }> }): Promise<Metadata> {
+  const { handle } = await params;
+  await ensureSchema();
+  const users = (await sql`SELECT name, handle, bio FROM users WHERE handle = ${handle} LIMIT 1;`) as any[];
+  if (!users.length) return { title: `User not found`, description: `This profile does not exist.`, alternates: { canonical: `/u/${handle}` } };
+  const u = users[0];
+  const title = `${u.name || u.handle} — Profile on Bridged.vu`;
+  const desc = (u.bio || `Follow ${u.handle} for startup updates on Bridged.vu`).slice(0, 150);
+  return {
+    title,
+    description: desc,
+    alternates: { canonical: `/u/${u.handle}` },
+    openGraph: {
+      title,
+      description: desc,
+      url: `/u/${u.handle}`,
+      type: 'profile',
+    },
+    twitter: { card: 'summary', title, description: desc },
+  };
 }

@@ -68,7 +68,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-300px)] flex items-start justify-center px-4 pt-8">
+    <div className="min-h-[calc(100vh-300px)] flex items-start justify-center px-4 pt-8" role="main">
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
