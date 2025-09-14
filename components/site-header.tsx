@@ -41,7 +41,7 @@ export default function SiteHeader() {
         <motion.nav
           className="
             mx-auto w-full max-w-5xl
-            flex items-center justify-between gap-4
+            grid grid-cols-[1fr_auto_1fr] items-center gap-4
             pb-3 md:pb-4
             border-b-2 border-neutral-800/40
             font-[family-name:var(--fd-nav-font)]
@@ -67,7 +67,7 @@ export default function SiteHeader() {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <Image
-                  src="https://lh3.googleusercontent.com/d/1s8UmrFf3NmDy_4QR4_jjXedwxiTtPXsQ"
+                  src="/logo.png"
                   alt="Bridged.vu logo"
                   width={40}
                   height={40}
@@ -91,6 +91,8 @@ export default function SiteHeader() {
             className="
               flex items-center gap-3 lg:gap-4
               text-sm lg:text-base
+              justify-center
+              justify-self-center
             "
             aria-label="Main navigation"
             initial={{ opacity: 0, y: -10 }}
@@ -134,6 +136,7 @@ export default function SiteHeader() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
+            style={{ justifySelf: 'end' }}
           >
             {/* Account Dropdown */}
             <div className="relative">

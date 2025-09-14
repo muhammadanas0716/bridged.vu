@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import UpvoteButton from "./UpvoteButton";
 
 type Mode = "all" | "following";
 
@@ -14,10 +15,13 @@ type FeedItem = {
   created_at: string;
   startup_name: string;
   startup_slug: string;
+  startup_website_url?: string | null;
+  startup_logo_url?: string | null;
   author_id: string;
   author_handle: string;
   author_name: string | null;
   is_following: boolean;
+  upvotes: number;
 };
 
 export default function Feed() {
@@ -102,21 +106,60 @@ export default function Feed() {
         {mode === "all" ? "Latest updates from founders." : canUseFollowing ? "Updates from founders you follow." : "Sign in to see followed creators."}
       </p>
 
-      <ul className="space-y-4">
+      <ul className="space-y-3">
         {items.map((i) => (
-          <motion.li key={i.id} className="p-4 rounded-xl border border-neutral-900/20 bg-white/50" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-            <div className="flex items-center gap-2 text-sm text-neutral-800/70">
-              <Link href={`/u/${i.author_handle}`} className="hover:underline">@{i.author_handle}</Link>
-              {i.is_following && (
-                <span className="px-2 py-0.5 text-xs rounded-full border border-neutral-900/20 bg-neutral-900/5">Following</span>
-              )}
-              <span>·</span>
-              <Link href={`/p/${i.startup_slug}`} className="hover:underline">{i.startup_name}</Link>
-              <span>·</span>
-              <span>#{i.issue_number}</span>
+          <motion.li key={i.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
+            <div className="flex items-stretch gap-4 rounded-2xl border border-neutral-900/15 bg-white/70 hover:bg-white/90 transition-colors p-4 md:p-5">
+              <div className="shrink-0">
+                <UpvoteButton targetType="issue" targetId={i.id} initialCount={i.upvotes || 0} disabled={!isAuthed} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-3">
+                  {i.startup_logo_url && (
+                    <img
+                      src={normUrl(i.startup_logo_url)}
+                      alt={`${i.startup_name} logo`}
+                      className="size-7 rounded-md border border-neutral-900/20 bg-white object-cover"
+                      loading="lazy"
+                    />
+                  )}
+                  <div className="font-medium text-neutral-900 truncate">{i.title}</div>
+                </div>
+                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-neutral-800/70">
+                  <Link href={`/u/${i.author_handle}`} className="hover:underline">@{i.author_handle}</Link>
+                  <FollowInline
+                    following={i.is_following}
+                    disabled={!isAuthed}
+                    onToggle={async () => {
+                      const ok = await toggleFollow(i.author_id);
+                      if (ok) {
+                        setItems((prev) => prev.map((it) => it.author_id === i.author_id ? { ...it, is_following: !it.is_following } : it));
+                      }
+                    }}
+                  />
+                  <span>·</span>
+                  <Link href={`/p/${i.startup_slug}`} className="hover:underline">{i.startup_name}</Link>
+                  <span>·</span>
+                  <span>#{i.issue_number}</span>
+                  <span>·</span>
+                  <span>{timeAgo(i.created_at)}</span>
+                </div>
+                <p className="text-sm mt-1 text-neutral-900/90 line-clamp-2">{i.content}</p>
+              </div>
+              <div className="hidden md:flex items-center gap-2">
+                {i.startup_website_url && (
+                  <a
+                    href={normUrl(i.startup_website_url)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 text-sm"
+                  >
+                    Visit website
+                  </a>
+                )}
+                <Link href={`/p/${i.startup_slug}`} className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 text-sm">View</Link>
+              </div>
             </div>
-            <div className="mt-1 font-medium">{i.title}</div>
-            <p className="text-sm mt-1 whitespace-pre-wrap text-neutral-900/90">{i.content}</p>
           </motion.li>
         ))}
         {!loading && items.length === 0 && (
@@ -139,3 +182,43 @@ export default function Feed() {
   );
 }
 
+function timeAgo(iso: string) {
+  const d = new Date(iso);
+  const s = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (s < 60) return `${s}s ago`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m ago`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h ago`;
+  const days = Math.floor(h / 24);
+  return `${days}d ago`;
+}
+
+async function toggleFollow(authorId: string) {
+  try {
+    const res = await fetch('/api/follow', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ following_user_id: authorId }) });
+    if (!res.ok) return false;
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function normUrl(url?: string | null) {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
+function FollowInline({ following, onToggle, disabled }: { following: boolean; onToggle: () => void; disabled?: boolean }) {
+  return (
+    <button
+      onClick={onToggle}
+      disabled={disabled}
+      className={`ml-1 px-2 py-0.5 rounded-full border text-[11px] ${following ? 'border-neutral-900/20 bg-neutral-900/5' : 'border-neutral-900/30 hover:bg-neutral-900/5'}`}
+      title={following ? 'Unfollow' : 'Follow'}
+    >
+      {following ? 'Following' : 'Follow'}
+    </button>
+  );
+}

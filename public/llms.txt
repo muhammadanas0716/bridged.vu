@@ -1,0 +1,40 @@
+# llms.txt — Guidance for AI crawlers and LLMs
+
+version: 1
+
+owner: Bridged.vu
+contact: issues@bridged.vu (or open a GitHub issue)
+
+rules:
+  # Public pages may be indexed and used for search and navigation features.
+  - path: /
+    allow_training: false
+    allow_qa: true
+    allow_search_indexing: true
+
+  - path: /about
+    allow_training: false
+    allow_qa: true
+    allow_search_indexing: true
+
+  - path: /p/
+    allow_training: false
+    allow_qa: true
+    allow_search_indexing: true
+
+  - path: /u/
+    allow_training: false
+    allow_qa: true
+    allow_search_indexing: true
+
+  # Disallow model training on user-generated content without explicit opt-in.
+  - path: /api/
+    allow_training: false
+    allow_qa: false
+    allow_search_indexing: false
+
+notes:
+  - User-generated content remains the property of its authors.
+  - Do not use content for model training without explicit permission.
+  - This file is advisory; respect for it is expected from responsible crawlers.
+

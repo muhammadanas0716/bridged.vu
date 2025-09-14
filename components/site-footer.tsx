@@ -48,6 +48,15 @@ export default function SiteFooter() {
           >
             privacy policy
           </Link>
+          <span className="text-neutral-400 select-none">·</span>
+          <Link
+            href="/llms.txt"
+            className="text-neutral-700 hover:text-neutral-900 cursor-pointer transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            llms.txt
+          </Link>
         </motion.nav>
 
         {/* Signature */}

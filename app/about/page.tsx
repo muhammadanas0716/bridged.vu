@@ -18,7 +18,9 @@ export default function AboutPage() {
             About Bridged.vu
           </h1>
           <p className="mt-3 text-neutral-800/80 text-base md:text-lg max-w-3xl">
-            Bridge the gap between users and founders early on. Share concise updates, grow an audience from day one, and build in public with signal over noise.
+            Bridge the gap between users and founders early on. Share concise
+            updates, grow an audience from day one, and build in public with
+            signal over noise.
           </p>
         </div>
 
@@ -30,7 +32,9 @@ export default function AboutPage() {
             title="What is Bridged.vu?"
             body={
               <p>
-                A lightweight platform for founders to publish short, frequent updates about their startup journey, and for users to discover, follow, and support projects before launch.
+                A lightweight platform for founders to publish short, frequent
+                updates about their startup journey, and for users to discover,
+                follow, and support projects before launch.
               </p>
             }
           />
@@ -38,7 +42,9 @@ export default function AboutPage() {
             title="Why it exists"
             body={
               <p>
-                Early traction is hard. Bridged.vu focuses on authentic progress over polished launches—helping founders validate ideas and engage early users without the overhead of a full content stack.
+                Early traction is hard. Bridged.vu focuses on authentic progress
+                over polished launches—helping founders validate ideas and
+                engage early users without the overhead of a full content stack.
               </p>
             }
           />
@@ -46,7 +52,9 @@ export default function AboutPage() {
 
         {/* How it works */}
         <div className="mt-12">
-          <h2 className="text-xl md:text-2xl font-semibold text-neutral-900">How it works</h2>
+          <h2 className="text-xl md:text-2xl font-semibold text-neutral-900">
+            How it works
+          </h2>
           <ol className="mt-4 space-y-3">
             {[
               {
@@ -79,16 +87,26 @@ export default function AboutPage() {
             body={
               <ul className="list-disc pl-5 space-y-2 text-neutral-800/90">
                 <li>
-                  <span className="font-medium text-neutral-900">Authenticity:</span> honest progress over marketing fluff.
+                  <span className="font-medium text-neutral-900">
+                    Authenticity:
+                  </span>{" "}
+                  honest progress over marketing fluff.
                 </li>
                 <li>
-                  <span className="font-medium text-neutral-900">Signal:</span> small, frequent updates &gt; long, rare posts.
+                  <span className="font-medium text-neutral-900">Signal:</span>{" "}
+                  small, frequent updates &gt; long, rare posts.
                 </li>
                 <li>
-                  <span className="font-medium text-neutral-900">Ownership:</span> your updates, your audience.
+                  <span className="font-medium text-neutral-900">
+                    Ownership:
+                  </span>{" "}
+                  your updates, your audience.
                 </li>
                 <li>
-                  <span className="font-medium text-neutral-900">Openness:</span> follow, upvote, and learn together.
+                  <span className="font-medium text-neutral-900">
+                    Openness:
+                  </span>{" "}
+                  follow, upvote, and learn together.
                 </li>
               </ul>
             }
@@ -97,7 +115,9 @@ export default function AboutPage() {
             title="Built with care"
             body={
               <p>
-                Bridged.vu is open-source and thoughtfully minimal. It uses Next.js, TypeScript, Tailwind, and a clean design system to stay fast and approachable.
+                Bridged.vu is open-source and thoughtfully minimal. It uses
+                Next.js, TypeScript, Tailwind, and a clean design system to stay
+                fast and approachable.
               </p>
             }
           />
@@ -111,7 +131,11 @@ export default function AboutPage() {
           <CTA href="/" secondary>
             Explore the Feed
           </CTA>
-          <CTA href="https://github.com/your-org/your-repo" secondary external>
+          <CTA
+            href="https://github.com/muhammadanas0716/bridged.vu"
+            secondary
+            external
+          >
             View Source
           </CTA>
         </div>
@@ -130,7 +154,9 @@ function Section({ title, body }: { title: string; body: React.ReactNode }) {
       className="rounded-xl border border-neutral-900/20 bg-white/60 p-5"
     >
       <h3 className="text-lg font-semibold text-neutral-900">{title}</h3>
-      <div className="mt-2 text-neutral-800/85 text-sm leading-relaxed">{body}</div>
+      <div className="mt-2 text-neutral-800/85 text-sm leading-relaxed">
+        {body}
+      </div>
     </motion.section>
   );
 }
@@ -155,7 +181,12 @@ function CTA({
     "inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-medium transition-colors";
   const content = <span>{children}</span>;
   return external ? (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={`${base} ${cls}`}>
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${base} ${cls}`}
+    >
       {content}
     </a>
   ) : (
@@ -164,4 +195,3 @@ function CTA({
     </Link>
   );
 }
-

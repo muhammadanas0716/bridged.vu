@@ -1,4 +1,4 @@
-# Contributing to founderdiary.io
+# Contributing to Bridged.vu
 
 Thanks for your interest in contributing! We welcome issues, discussions, and pull requests from the community.
 
@@ -84,6 +84,16 @@ By contributing, you agree that your contributions will be licensed under the [M
 
 ---
 
+---
+
+## 🔐 Security & Privacy
+
+- Never commit secrets; use `.env.local` (see `.env.example`)
+- Do not log sensitive data (passwords, tokens)
+- Report security issues privately via Issues with the `security` label (we’ll coordinate a secure channel)
+
+---
+
 <p align="center">
-  Made with ❤️ by the <b>FounderDiary</b> community
+  Made with ❤️ by the <b>Bridged.vu</b> community
 </p>

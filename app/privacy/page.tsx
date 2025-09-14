@@ -31,14 +31,10 @@ export default function PrivacyPage() {
                 1. Introduction
               </h2>
               <p className="text-neutral-700 mb-4">
-                Bridged.vu ("we," "our," or "us") is committed to protecting
-                your privacy. This Privacy Policy explains how we collect, use,
-                disclose, and safeguard your information when you use our
-                open-source platform and services.
+                Bridged.vu ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our platform.
               </p>
               <p className="text-neutral-700 mb-4">
-                By using Bridged.vu, you agree to the collection and use of
-                information in accordance with this Privacy Policy.
+                By using Bridged.vu, you consent to the practices described here.
               </p>
             </section>
 
@@ -68,8 +64,7 @@ export default function PrivacyPage() {
                 We automatically collect certain technical information:
               </p>
               <ul className="list-disc pl-6 text-neutral-700 mb-4">
-                <li>IP address and browser information</li>
-                <li>Device and operating system details</li>
+                <li>IP address, browser, and device information</li>
                 <li>Usage patterns and interactions with the platform</li>
                 <li>Cookies and similar tracking technologies</li>
               </ul>
@@ -102,9 +97,7 @@ export default function PrivacyPage() {
                 4. Information Sharing and Disclosure
               </h2>
               <p className="text-neutral-700 mb-4">
-                We do not sell, trade, or rent your personal information to
-                third parties. We may share information in the following
-                circumstances:
+                We do not sell your personal information. We may share information in these limited cases:
               </p>
               <ul className="list-disc pl-6 text-neutral-700 mb-4">
                 <li>

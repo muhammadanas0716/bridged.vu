@@ -66,3 +66,34 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized or invalid" }, { status: 401 });
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const user = await requireUser();
+    await ensureSchema();
+    const body = await req.json();
+    const id = String(body.id || "");
+    if (!id) return NextResponse.json({ error: "Missing startup id" }, { status: 400 });
+
+    const owned = (await sql`SELECT 1 FROM startups WHERE id = ${id} AND user_id = ${user.id} LIMIT 1;`) as any[];
+    if (owned.length === 0) return NextResponse.json({ error: "Not found or not allowed" }, { status: 404 });
+
+    const fields: string[] = [];
+    const values: any[] = [];
+    if (typeof body.name === 'string') { fields.push('name'); values.push(body.name); }
+    if (typeof body.description === 'string') { fields.push('description'); values.push(body.description); }
+    if (typeof body.website_url === 'string') { fields.push('website_url'); values.push(body.website_url); }
+    if (typeof body.logo_url === 'string') { fields.push('logo_url'); values.push(body.logo_url); }
+
+    if (fields.length === 0) return NextResponse.json({ error: "No fields to update" }, { status: 400 });
+
+    // Build dynamic SET clause
+    const setSql = fields.map((f, idx) => `${f} = $${idx + 1}`).join(', ');
+    const query = `UPDATE startups SET ${setSql} WHERE id = $${fields.length + 1} RETURNING *;`;
+    const rows = await (sql as any).unsafe(query, [...values, id]);
+    return NextResponse.json({ startup: rows[0] });
+  } catch (err) {
+    console.error("PATCH /api/startups error", err);
+    return NextResponse.json({ error: "Unauthorized or invalid" }, { status: 401 });
+  }
+}

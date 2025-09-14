@@ -1,142 +1,103 @@
-# founderdiary.io
+# Bridged.vu
+
+Bridge the gap between users and founders early on. Share concise updates, grow an audience from day one, and build in public with signal over noise.
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js Badge"/>
-  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript Badge"/>
-  <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS Badge"/>
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License Badge"/>
+  <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS"/>
+  <img src="https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License"/>
+  <br/>
+  <img src="https://img.shields.io/badge/Analytics-Vercel-blue?style=flat" alt="Vercel Analytics"/>
+  <img src="https://img.shields.io/badge/Speed%20Insights-Vercel-blue?style=flat" alt="Vercel Speed Insights"/>
+  <img src="https://img.shields.io/badge/Migrations-SQL-lightgrey?style=flat" alt="SQL migrations"/>
 </p>
 
-<p align="center">
-  <b>FounderDiary</b> — an open-source platform where founders can share their SaaS story and daily progress.
-</p>
+## Features
 
----
+- Auth with email + password (bcrypt, secure session cookie)
+- Founder dashboard: create startups and publish numbered “issues” (updates)
+- Public feed (All / Following) with Product Hunt–style cards and upvotes
+- Startup pages with updates and upvoting; profile pages with follow
+- Notifications and confetti on publish/create
+- Supabase Postgres with SQL migrations (no ORM)
+- Vercel Analytics and Speed Insights
 
-## ✨ Features (Scaffold)
-
-- 🚀 Next.js (App Router) with TypeScript  
-- 🎨 TailwindCSS v4 (modern config-less setup)  
-- 📂 Clean project structure (app router + components)  
-- 📝 Open-source ready with MIT License, Contributing Guidelines, and Code of Conduct  
-- 🎯 Minimal skeleton: Home, Dashboard, Login, Project, and User profile routes  
-
----
-
-## 📦 Tech Stack
-
-- **Framework**: [Next.js 15](https://nextjs.org/)  
-- **Language**: [TypeScript](https://www.typescriptlang.org/)  
-- **Styling**: [TailwindCSS v4](https://tailwindcss.com/docs)  
-- **Package Manager**: npm / pnpm / yarn (your choice)  
-
----
-
-## 🛠️ Getting Started
-
-Clone the repository and install dependencies:
+## Quickstart
 
 ```bash
-# clone
-git clone https://github.com/YOUR_USERNAME/founderdiary.io.git
-cd founderdiary.io
-
-# install
+git clone https://github.com/muhammadanas0716/bridged.vu
+cd bridged.vu
+cp .env.example .env.local
 npm install
 
-# dev
+# Initialize DB schema
+npm run migrate
+
+# Dev server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to see it running.
+Visit http://localhost:3000.
 
----
+## Environment
 
-## ⚙️ Environment Variables
+Configure `.env.local` using the template in `.env.example`. Key variables:
 
-Copy `.env.example` into `.env.local`:
+- `POSTGRES_URL` (Supabase pooled connection; 6543)
+- `POSTGRES_URL_NON_POOLING` (5432)
+- `SUPABASE_URL`, `SUPABASE_ANON_KEY` (optional if you integrate RLS/edge)
+
+This project connects directly to Postgres using the `postgres` driver. SSL is enabled with relaxed verification for common local setups.
+
+## Migrations
+
+SQL migrations live under `migrations/` and are executed by a tiny runner.
 
 ```bash
-cp .env.example .env.local
+npm run migrate
 ```
 
-Default values are already provided for local development.
-Future values (API keys, DB URLs, etc.) will be added here.
+This creates and populates:
 
----
+- `users`, `sessions`
+- `startups`, `issues`
+- `upvotes` with `vote_target` enum
+- `follows`
 
-## 📂 Project Structure
+No ORM is used; we keep the schema explicit and easy to audit.
 
-```
-founderdiary.io/
-├─ app/                # Next.js App Router pages
-│  ├─ layout.tsx       # Root layout
-│  ├─ page.tsx         # Home
-│  ├─ login/           # Login route
-│  ├─ dashboard/       # Dashboard route
-│  ├─ u/[handle]/      # User profile route
-│  └─ p/[projectSlug]/ # Project route
-│
-├─ components/         # Shared UI components
-│  └─ site-header.tsx
-│
-├─ public/             # Static assets
-│
-├─ app/globals.css     # TailwindCSS global styles
-├─ .env.example        # Example env vars
-├─ .gitignore
-├─ CONTRIBUTING.md
-├─ CODE_OF_CONDUCT.md
-├─ LICENSE
-└─ README.md
-```
+## Architecture
 
----
+- Next.js App Router (server components where possible)
+- Client components for interactive areas (forms, feed, upvotes)
+- `lib/db.ts` for the database client
+- `lib/auth.ts` for user creation, hashing, sessions
+- REST-style API routes under `app/api/**`
 
-## 🤝 Contributing
+## Key Routes
 
-We welcome contributions from the community!
+- `/` — Public feed with All/Following and Load more
+- `/dashboard` — Tabs for Overview, Startups, Profile
+- `/p/[slug]` — Startup page + updates + upvote
+- `/u/[handle]` — Profile + follow
+- `/login`, `/signup`
 
-1. Fork the repository
-2. Create a new branch:
+## Scripts
 
-   ```bash
-   git checkout -b feat/your-feature-name
-   ```
-3. Commit your changes (use [Conventional Commits](https://www.conventionalcommits.org/)):
+- `dev` — run Next.js dev server
+- `build` / `start` — production build / start
+- `migrate` — run SQL migrations
 
-   ```bash
-   git commit -m "feat: add project page layout"
-   ```
-4. Push to your fork and open a PR
+## Contributing
 
-Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) for full guidelines.
+We welcome contributions! Please see `CONTRIBUTING.md` for workflow, branching, and commit guidelines. All participants are expected to uphold our `CODE_OF_CONDUCT.md`.
 
----
+## License
 
-## 📜 Code of Conduct
+MIT — see `LICENSE`.
 
-This project follows the [Contributor Covenant v2.1](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
-By participating, you agree to uphold this standard.
+## Acknowledgements
 
-See [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) for details.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**.
-See [`LICENSE`](LICENSE) for details.
-
----
-
-## 🌟 Acknowledgements
-
-* Inspired by the **build-in-public** movement
-* Powered by the amazing [Next.js](https://nextjs.org/) and [TailwindCSS](https://tailwindcss.com/) communities
-
----
-
-<p align="center">
-  Made with ❤️ by <a href="https://github.com/YOUR_USERNAME">YOUR_NAME</a>
-</p>
+Inspired by the build-in-public movement, Product Hunt’s card aesthetic, and the open-source community.

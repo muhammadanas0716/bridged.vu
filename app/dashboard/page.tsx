@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { ensureSchema, sql } from "@/lib/db";
-import CreateStartupForm from "./ui/CreateStartupForm";
-import CreateIssueForm from "./ui/CreateIssueForm";
+import DashboardTabs from "./ui/DashboardTabs";
 
 export default async function DashboardPage() {
   const user = await getCurrentUser();
@@ -29,68 +28,12 @@ export default async function DashboardPage() {
   `) as any[];
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-8">
       <div>
         <h1 className="text-2xl md:text-3xl font-semibold mb-2">Welcome, {user.name || user.email}</h1>
-        <p className="text-neutral-800/80">Create your startup and start publishing concise daily updates.</p>
+        <p className="text-neutral-800/80">Create your startup, publish concise updates, and manage your profile.</p>
       </div>
-
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
-          <h2 className="text-lg font-medium mb-3">Create a Startup</h2>
-          <CreateStartupForm />
-        </div>
-
-        <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
-          <h2 className="text-lg font-medium mb-3">Write an Update</h2>
-          <CreateIssueForm startups={startups} />
-        </div>
-      </section>
-
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
-          <h3 className="text-base font-medium mb-3">Your Startups</h3>
-          <ul className="space-y-3">
-            {startups.map((s) => (
-              <li key={s.id} className="flex items-center justify-between">
-                <div>
-                  <div className="font-medium">{s.name}</div>
-                  <div className="text-xs text-neutral-800/70">/{s.slug}</div>
-                  {s.website_url && (
-                    <a
-                      href={s.website_url.startsWith('http') ? s.website_url : `https://${s.website_url}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-neutral-900 underline underline-offset-2 hover:opacity-80"
-                    >
-                      {s.website_url}
-                    </a>
-                  )}
-                </div>
-                <div className="text-sm">⬆️ {s.upvotes}</div>
-              </li>
-            ))}
-            {startups.length === 0 && (
-              <li className="text-sm text-neutral-800/70">No startups yet</li>
-            )}
-          </ul>
-        </div>
-
-        <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
-          <h3 className="text-base font-medium mb-3">Recent Updates</h3>
-          <ul className="space-y-3">
-            {issues.map((i) => (
-              <li key={i.id}>
-                <div className="text-sm text-neutral-800/70">{i.startup_name} · #{i.issue_number}</div>
-                <div className="font-medium">{i.title}</div>
-              </li>
-            ))}
-            {issues.length === 0 && (
-              <li className="text-sm text-neutral-800/70">No updates yet</li>
-            )}
-          </ul>
-        </div>
-      </section>
+      <DashboardTabs user={user} startups={startups} issues={issues} />
     </div>
   );
 }
