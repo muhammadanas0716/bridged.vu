@@ -60,7 +60,10 @@ export default function SignupPage() {
         const res = await fetch("/api/auth/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+          }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -77,7 +80,10 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-300px)] flex items-start justify-center px-4 pt-8" role="main">
+    <div
+      className="min-h-[calc(100vh-300px)] flex items-start justify-center px-4 pt-8"
+      role="main"
+    >
       <motion.div
         className="w-full max-w-md"
         initial={{ opacity: 0, y: 20 }}
@@ -274,7 +280,11 @@ export default function SignupPage() {
               {submitting ? "Creating..." : "Create Account"}
             </motion.button>
             {serverError && (
-              <motion.p className="mt-3 text-sm text-red-600" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <motion.p
+                className="mt-3 text-sm text-red-600"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
                 {serverError}
               </motion.p>
             )}
@@ -329,7 +339,7 @@ export default function SignupPage() {
         </motion.div>
 
         {/* Social Login Buttons */}
-        <motion.div
+        {/* <motion.div
           className="space-y-3"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -368,7 +378,7 @@ export default function SignupPage() {
             <GitHubIcon className="w-5 h-5" />
             Continue with GitHub
           </motion.button>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </div>
   );
