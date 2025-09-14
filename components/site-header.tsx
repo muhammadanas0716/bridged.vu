@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import NonprofitModalTrigger from "@/components/nonprofit-modal";
 import { useEffect, useState } from "react";
 
 export default function SiteHeader() {
@@ -259,29 +260,38 @@ export default function SiteHeader() {
               </AnimatePresence>
             </div>
 
-            <motion.div
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <Link
-                href="https://github.com/muhammadanas0716/bridged.vu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="
-                  inline-flex items-center gap-2
-                  rounded-xl border border-neutral-900/40
-                  px-3 py-1.5 text-sm lg:text-[0.95rem]
-                  hover:bg-neutral-900/5 hover:border-neutral-900/60
-                  transition-all duration-200
-                "
-                aria-label="Support on GitHub"
-                title="Support (GitHub)"
+            <div className="flex items-center gap-2">
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <GitHubIcon className="size-4 lg:size-5" />
-                <span>Support</span>
-              </Link>
-            </motion.div>
+                <NonprofitModalTrigger />
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              >
+                <Link
+                  href="https://github.com/muhammadanas0716/bridged.vu"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex items-center gap-2
+                    rounded-xl border border-neutral-900/40
+                    px-3 py-1.5 text-sm lg:text-[0.95rem]
+                    hover:bg-neutral-900/5 hover:border-neutral-900/60
+                    transition-all duration-200
+                  "
+                  aria-label="Support on GitHub"
+                  title="Support (GitHub)"
+                >
+                  <GitHubIcon className="size-4 lg:size-5" />
+                  <span>Support</span>
+                </Link>
+              </motion.div>
+            </div>
           </motion.div>
         </motion.nav>
       </div>

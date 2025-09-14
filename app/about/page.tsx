@@ -123,6 +123,18 @@ export default function AboutPage() {
           />
         </div>
 
+        {/* Nonprofit status */}
+        <div className="mt-12">
+          <Section
+            title="Nonprofit status"
+            body={
+              <p>
+                bridged.vu operates under fiscal sponsorship by The Hack Foundation (dba Hack Club), a 501(c)(3) public charity. This means we receive the benefits of nonprofit status while Hack Club provides the legal and financial umbrella. EIN 81-2908499. See details on our <a href="/nonprofit" className="underline">nonprofit</a> page.
+              </p>
+            }
+          />
+        </div>
+
         {/* Call to action */}
         <div className="mt-14 flex flex-col sm:flex-row gap-3">
           <CTA href="/signup" primary>

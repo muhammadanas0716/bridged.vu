@@ -105,37 +105,39 @@ export default function Feed() {
         {mode === "all" ? "Latest updates from founders." : canUseFollowing ? "Updates from founders you follow." : "Sign in to see followed creators."}
       </p>
 
-      <ul className="space-y-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {items.map((i) => (
-          <motion.li key={i.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
-            <div className="flex items-stretch gap-4 rounded-2xl border border-neutral-900/15 bg-white/70 hover:bg-white/90 transition-colors p-4 md:p-5">
-              <div className="shrink-0">
-                <UpvoteButton targetType="issue" targetId={i.id} initialCount={i.upvotes || 0} disabled={!isAuthed} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="font-medium text-neutral-900 truncate">{i.title}</div>
-                <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-neutral-800/70">
-                  <Link href={`/u/${i.author_handle}`} className="hover:underline">@{i.author_handle}</Link>
-                  <FollowInline
-                    following={i.is_following}
-                    disabled={!isAuthed}
-                    onToggle={async () => {
-                      const ok = await toggleFollow(i.author_id);
-                      if (ok) {
-                        setItems((prev) => prev.map((it) => it.author_id === i.author_id ? { ...it, is_following: !it.is_following } : it));
-                      }
-                    }}
-                  />
-                  <span>·</span>
-                  <Link href={`/p/${i.startup_slug}`} className="hover:underline">{i.startup_name}</Link>
-                  <span>·</span>
-                  <span>#{i.issue_number}</span>
-                  <span>·</span>
-                  <span>{timeAgo(i.created_at)}</span>
+          <motion.div key={i.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="rounded-2xl border border-neutral-900/15 bg-white/70 hover:bg-white/90 transition-colors">
+            <div className="p-4 md:p-5 h-full flex flex-col">
+              <div className="flex items-start gap-3">
+                <div className="shrink-0">
+                  <UpvoteButton targetType="issue" targetId={i.id} initialCount={i.upvotes || 0} disabled={!isAuthed} />
                 </div>
-                <p className="text-sm mt-1 text-neutral-900/90 line-clamp-2">{i.content}</p>
+                <div className="min-w-0 flex-1">
+                  <div className="font-medium text-neutral-900 truncate">{i.title}</div>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-neutral-800/70">
+                    <Link href={`/u/${i.author_handle}`} className="hover:underline">@{i.author_handle}</Link>
+                    <FollowInline
+                      following={i.is_following}
+                      disabled={!isAuthed}
+                      onToggle={async () => {
+                        const ok = await toggleFollow(i.author_id);
+                        if (ok) {
+                          setItems((prev) => prev.map((it) => it.author_id === i.author_id ? { ...it, is_following: !it.is_following } : it));
+                        }
+                      }}
+                    />
+                    <span>·</span>
+                    <Link href={`/p/${i.startup_slug}`} className="hover:underline">{i.startup_name}</Link>
+                    <span>·</span>
+                    <span>#{i.issue_number}</span>
+                    <span>·</span>
+                    <span>{timeAgo(i.created_at)}</span>
+                  </div>
+                </div>
               </div>
-              <div className="hidden md:flex items-center gap-2">
+              <p className="text-sm mt-3 text-neutral-900/90 line-clamp-3">{i.content}</p>
+              <div className="mt-4 flex items-center gap-2">
                 {i.startup_website_url && (
                   <a
                     href={normUrl(i.startup_website_url)}
@@ -149,12 +151,12 @@ export default function Feed() {
                 <Link href={`/p/${i.startup_slug}`} className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 text-sm">View</Link>
               </div>
             </div>
-          </motion.li>
+          </motion.div>
         ))}
-        {!loading && items.length === 0 && (
-          <li className="text-sm text-neutral-800/70">No updates yet.</li>
-        )}
-      </ul>
+      </div>
+      {!loading && items.length === 0 && (
+        <div className="text-sm text-neutral-800/70">No updates yet.</div>
+      )}
 
       <div className="flex items-center gap-3">
         <motion.button
