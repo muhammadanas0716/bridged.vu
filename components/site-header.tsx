@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import NonprofitModalTrigger from "@/components/nonprofit-modal";
 import { useEffect, useState } from "react";
 
 export default function SiteHeader() {
@@ -266,7 +265,20 @@ export default function SiteHeader() {
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <NonprofitModalTrigger />
+                <Link
+                  href="/nonprofit"
+                  className="
+                    inline-flex items-center gap-2
+                    rounded-xl border border-neutral-900/40
+                    px-3 py-1.5 text-sm lg:text-[0.95rem]
+                    hover:bg-neutral-900/5 hover:border-neutral-900/60
+                    transition-all duration-200
+                  "
+                  aria-label="Nonprofit Status"
+                  title="Nonprofit Status"
+                >
+                  <span>Our Non profit Status</span>
+                </Link>
               </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
