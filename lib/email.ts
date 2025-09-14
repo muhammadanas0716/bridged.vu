@@ -1,17 +1,23 @@
-import { Resend } from 'resend';
+import { Resend } from "resend";
 
-const resendApiKey = process.env.RESEND_API_KEY || '';
+const resendApiKey = process.env.RESEND_API_KEY || "";
 const resend = resendApiKey ? new Resend(resendApiKey) : null;
 
-export async function sendWelcomeEmail(params: { to: string; name?: string | null; handle?: string | null }) {
+export async function sendWelcomeEmail(params: {
+  to: string;
+  name?: string | null;
+  handle?: string | null;
+}) {
   if (!resend) return;
-  const from = 'anas@bridged.vu';
-  const subject = 'Welcome to Bridged.vu 🎉';
-  const preheader = 'Bridge the gap between users and founders early on';
+  const from = "anas@bridged.vu";
+  const subject = "Welcome to Bridged.vu 🎉";
+  const preheader = "Bridge the gap between users and founders early on";
   const { to, name, handle } = params;
-  const display = name || to.split('@')[0];
-  const dashboardUrl = `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/dashboard`;
-  const profileUrl = handle ? `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/u/${handle}` : `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}`;
+  const display = name || to.split("@")[0];
+  const dashboardUrl = `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.bridged.vu/"}/dashboard`;
+  const profileUrl = handle
+    ? `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.bridged.vu/"}/u/${handle}`
+    : `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.bridged.vu/"}`;
 
   const html = `
   <!doctype html>
@@ -24,7 +30,7 @@ export async function sendWelcomeEmail(params: { to: string; name?: string | nul
       body{background:#f7f7f7;margin:0;padding:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#111}
       .container{max-width:560px;margin:0 auto;padding:24px}
       .card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px}
-      .btn{display:inline-block;background:#111;color:#fff;text-decoration:none;border-radius:10px;padding:10px 16px}
+      .btn{display:inline-block;background:#FFA500;color:#000;text-decoration:none;border-radius:10px;padding:10px 16px}
       .muted{color:#555}
       .mt{margin-top:12px}
     </style>
@@ -33,7 +39,7 @@ export async function sendWelcomeEmail(params: { to: string; name?: string | nul
     <div class="container">
       <div style="font-size:14px;color:#444;margin-bottom:10px">${preheader}</div>
       <div class="card">
-        <h1 style="margin:0 0 8px 0">Welcome, ${escapeHtml(display || '')} 👋</h1>
+        <h1 style="margin:0 0 8px 0">Welcome, ${escapeHtml(display || "")} 👋</h1>
         <p class="muted">We’re excited to have you at <strong>Bridged.vu</strong> — a simple, open platform to share concise startup updates, grow an audience from day one, and build in public.</p>
         <h2 style="font-size:16px;margin:20px 0 8px">Get started</h2>
         <ol class="muted" style="padding-left:18px;margin:8px 0 16px">
@@ -60,10 +66,10 @@ export async function sendWelcomeEmail(params: { to: string; name?: string | nul
   } catch (e) {
     // swallow send errors; sign-up should not fail on email issues
     // eslint-disable-next-line no-console
-    console.warn('sendWelcomeEmail failed', e);
+    console.warn("sendWelcomeEmail failed", e);
   }
 }
 
 function escapeHtml(s: string) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
