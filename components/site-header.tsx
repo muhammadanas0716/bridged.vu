@@ -3,10 +3,27 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SiteHeader() {
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+  const [isAuthed, setIsAuthed] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/me", { cache: "no-store" });
+        const data = await res.json();
+        if (mounted) setIsAuthed(!!data.user);
+      } catch {
+        if (mounted) setIsAuthed(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <motion.header
@@ -160,36 +177,54 @@ export default function SiteHeader() {
                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
-                    <motion.div
-                      whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Link
-                        href="/signup"
-                        className="
-                          block px-4 py-2 text-sm text-neutral-900
-                          hover:bg-neutral-900/5 transition-colors duration-200
-                        "
-                        onClick={() => setIsAccountDropdownOpen(false)}
-                      >
-                        Sign Up
-                      </Link>
-                    </motion.div>
-                    <motion.div
-                      whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Link
-                        href="/login"
-                        className="
-                          block px-4 py-2 text-sm text-neutral-900
-                          hover:bg-neutral-900/5 transition-colors duration-200
-                        "
-                        onClick={() => setIsAccountDropdownOpen(false)}
-                      >
-                        Sign In
-                      </Link>
-                    </motion.div>
+                    {isAuthed === null ? (
+                      <div className="px-4 py-2 text-sm text-neutral-800/70">Loading...</div>
+                    ) : isAuthed ? (
+                      <>
+                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                          <Link
+                            href="/dashboard"
+                            className="block px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
+                            onClick={() => setIsAccountDropdownOpen(false)}
+                          >
+                            Dashboard
+                          </Link>
+                        </motion.div>
+                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                          <button
+                            className="w-full text-left px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
+                            onClick={async () => {
+                              try { await fetch('/api/auth/logout', { method: 'POST' }); } catch {}
+                              setIsAccountDropdownOpen(false);
+                              window.location.href = '/';
+                            }}
+                          >
+                            Sign Out
+                          </button>
+                        </motion.div>
+                      </>
+                    ) : (
+                      <>
+                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                          <Link
+                            href="/signup"
+                            className="block px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
+                            onClick={() => setIsAccountDropdownOpen(false)}
+                          >
+                            Sign Up
+                          </Link>
+                        </motion.div>
+                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                          <Link
+                            href="/login"
+                            className="block px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
+                            onClick={() => setIsAccountDropdownOpen(false)}
+                          >
+                            Sign In
+                          </Link>
+                        </motion.div>
+                      </>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

@@ -9,7 +9,10 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.8",
+    "@neondatabase/serverless": "^1.0.1",
     "@tailwindcss/postcss": "^4.1.12",
+    "bcryptjs": "^3.0.2",
+    "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.23.12",
     "next": "latest",
     "postcss": "^8.5.6",

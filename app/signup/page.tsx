@@ -4,8 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,6 +15,8 @@ export default function SignupPage() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,10 +51,28 @@ export default function SignupPage() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", formData);
+      try {
+        setSubmitting(true);
+        setServerError(null);
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          setServerError(data.error || "Signup failed");
+        } else {
+          router.push("/dashboard");
+        }
+      } catch (err) {
+        setServerError("Something went wrong. Please try again.");
+      } finally {
+        setSubmitting(false);
+      }
     }
   };
 
@@ -247,9 +269,15 @@ export default function SignupPage() {
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
+              disabled={submitting}
             >
-              Create Account
+              {submitting ? "Creating..." : "Create Account"}
             </motion.button>
+            {serverError && (
+              <motion.p className="mt-3 text-sm text-red-600" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                {serverError}
+              </motion.p>
+            )}
           </motion.div>
         </motion.form>
 
