@@ -36,10 +36,10 @@ export default function AboutPage() {
             👋
           </motion.div>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-neutral-900 tracking-tight">
-            About <span className="text-yellow-600">FounderDiary</span>
+            About <span className="text-yellow-600">Bridged.vu</span>
           </h1>
           <p className="text-xl md:text-2xl text-neutral-700 max-w-3xl mx-auto leading-relaxed font-light">
-            A platform for authentic entrepreneurial storytelling, built by{" "}
+            Bridge the gap between users and founders early on — built by{" "}
             <span className="font-medium text-yellow-600">Muhammad Anas</span>
           </p>
         </motion.div>
@@ -56,10 +56,10 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="text-lg text-neutral-700 max-w-4xl mx-auto leading-relaxed">
-              FounderDiary exists to democratize entrepreneurial storytelling.
-              We believe every founder's journey— with its challenges,
-              breakthroughs, and lessons learned—deserves to be shared and
-              celebrated.
+              Bridged.vu exists to democratize entrepreneurial storytelling and
+              help users discover and support founders from day zero. Every
+              founder's journey—with its challenges, breakthroughs, and lessons
+              learned—deserves to be shared and celebrated.
             </p>
           </div>
 
@@ -142,7 +142,7 @@ export default function AboutPage() {
               <p>
                 My journey into development began with curiosity and has evolved
                 into a commitment to crafting software that empowers others.
-                FounderDiary represents my belief that powerful ideas can come
+                Bridged.vu represents my belief that powerful ideas can come
                 from anywhere, regardless of age.
               </p>
               <p>

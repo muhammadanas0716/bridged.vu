@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNotifications } from "@/components/notifications";
 
 type Startup = { id: string; name: string; slug: string };
 
 export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
+  const { notify } = useNotifications();
   const [startupId, setStartupId] = useState(startups[0]?.id || "");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -28,9 +30,9 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setMessage(data.error || "Failed to publish update");
+        notify({ title: "Failed to publish update", description: data.error || undefined, type: "error" });
       } else {
-        setMessage(`Published #${data.issue.issue_number}`);
+        notify({ title: "Update published", description: `#${data.issue.issue_number}`, type: "success" });
         setTitle("");
         setContent("");
         try {
@@ -39,7 +41,7 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
         } catch {}
       }
     } catch (err) {
-      setMessage("Something went wrong");
+      notify({ title: "Something went wrong", type: "error" });
     } finally {
       setSubmitting(false);
     }
@@ -71,7 +73,7 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
       {startups.length === 0 && (
         <p className="text-sm text-neutral-800/70">Create a startup first.</p>
       )}
-      {message && <p className="text-sm text-neutral-800/80">{message}</p>}
+      {message && <p className="text-sm text-red-600">{message}</p>}
     </motion.form>
   );
 }

@@ -103,7 +103,7 @@ export default function SignupPage() {
               >
                 <Image
                   src="/logo.png"
-                  alt="FounderDiary logo"
+                  alt="Bridged.vu logo"
                   width={48}
                   height={48}
                   className="rounded-lg"
@@ -113,10 +113,10 @@ export default function SignupPage() {
             </Link>
           </motion.div>
           <h1 className="text-2xl md:text-3xl font-semibold text-neutral-900 mb-2">
-            Join FounderDiary
+            Join Bridged.vu
           </h1>
           <p className="text-neutral-800/80 text-sm md:text-base">
-            Start sharing your founder journey today
+            Bridge the gap between users and founders early on
           </p>
         </motion.div>
 

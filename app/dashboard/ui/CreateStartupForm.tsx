@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useNotifications } from "@/components/notifications";
 
 export default function CreateStartupForm() {
+  const { notify } = useNotifications();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
@@ -27,9 +29,9 @@ export default function CreateStartupForm() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setMessage(data.error || "Failed to create startup");
+        notify({ title: "Failed to create startup", description: data.error || undefined, type: "error" });
       } else {
-        setMessage(`Created ${data.startup.name}`);
+        notify({ title: "Startup created", description: data.startup.name, type: "success" });
         setName("");
         setDescription("");
         setWebsite("");
@@ -40,7 +42,7 @@ export default function CreateStartupForm() {
         } catch {}
       }
     } catch (err) {
-      setMessage("Something went wrong");
+      notify({ title: "Something went wrong", type: "error" });
     } finally {
       setSubmitting(false);
     }
@@ -71,7 +73,8 @@ export default function CreateStartupForm() {
           {submitting ? "Creating..." : "Create Startup"}
         </motion.button>
       </div>
-      {message && <p className="text-sm text-neutral-800/80">{message}</p>}
+      {/* Inline message retained only for simple field validation */}
+      {message && <p className="text-sm text-red-600">{message}</p>}
     </motion.form>
   );
 }

@@ -94,7 +94,7 @@ export default function LoginPage() {
               >
                 <Image
                   src="/logo.png"
-                  alt="FounderDiary logo"
+                  alt="Bridged.vu logo"
                   width={48}
                   height={48}
                   className="rounded-lg"
@@ -107,7 +107,7 @@ export default function LoginPage() {
             Welcome Back
           </h1>
           <p className="text-neutral-800/80 text-sm md:text-base">
-            Sign in to your FounderDiary account
+            Sign in to your Bridged.vu account
           </p>
         </motion.div>
 

@@ -31,13 +31,13 @@ export default function PrivacyPage() {
                 1. Introduction
               </h2>
               <p className="text-neutral-700 mb-4">
-                FounderDiary ("we," "our," or "us") is committed to protecting
+                Bridged.vu ("we," "our," or "us") is committed to protecting
                 your privacy. This Privacy Policy explains how we collect, use,
                 disclose, and safeguard your information when you use our
                 open-source platform and services.
               </p>
               <p className="text-neutral-700 mb-4">
-                By using FounderDiary, you agree to the collection and use of
+                By using Bridged.vu, you agree to the collection and use of
                 information in accordance with this Privacy Policy.
               </p>
             </section>

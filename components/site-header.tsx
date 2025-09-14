@@ -28,7 +28,7 @@ export default function SiteHeader() {
   return (
     <motion.header
       className="min-h-[20vh] text-neutral-900"
-      aria-label="FounderDiary header"
+      aria-label="Bridged.vu header"
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -60,7 +60,7 @@ export default function SiteHeader() {
             <Link
               href="/"
               className="inline-flex items-center gap-3"
-              aria-label="FounderDiary home"
+              aria-label="Bridged.vu home"
             >
               <motion.div
                 whileHover={{ rotate: 5 }}
@@ -68,7 +68,7 @@ export default function SiteHeader() {
               >
                 <Image
                   src="/logo.png"
-                  alt="FounderDiary logo"
+                  alt="Bridged.vu logo"
                   width={40}
                   height={40}
                   className="rounded-md md:rounded-lg"
@@ -81,7 +81,7 @@ export default function SiteHeader() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
-                FounderDiary
+                Bridged.vu
               </motion.span>
             </Link>
           </motion.div>
@@ -116,7 +116,7 @@ export default function SiteHeader() {
                 <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-neutral-900 transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </motion.div>
-            <span aria-hidden>/</span>
+            {/* <span aria-hidden>/</span>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/pricing"
@@ -125,7 +125,7 @@ export default function SiteHeader() {
                 Pricing
                 <span className="absolute left-0 -bottom-1 w-0 h-0.5 bg-neutral-900 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
 
           {/* Right: Account Dropdown + Support (GitHub) */}
@@ -178,10 +178,17 @@ export default function SiteHeader() {
                     transition={{ duration: 0.2, ease: "easeOut" }}
                   >
                     {isAuthed === null ? (
-                      <div className="px-4 py-2 text-sm text-neutral-800/70">Loading...</div>
+                      <div className="px-4 py-2 text-sm text-neutral-800/70">
+                        Loading...
+                      </div>
                     ) : isAuthed ? (
                       <>
-                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(0, 0, 0, 0.05)",
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
                           <Link
                             href="/dashboard"
                             className="block px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
@@ -190,13 +197,22 @@ export default function SiteHeader() {
                             Dashboard
                           </Link>
                         </motion.div>
-                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(0, 0, 0, 0.05)",
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
                           <button
                             className="w-full text-left px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
                             onClick={async () => {
-                              try { await fetch('/api/auth/logout', { method: 'POST' }); } catch {}
+                              try {
+                                await fetch("/api/auth/logout", {
+                                  method: "POST",
+                                });
+                              } catch {}
                               setIsAccountDropdownOpen(false);
-                              window.location.href = '/';
+                              window.location.href = "/";
                             }}
                           >
                             Sign Out
@@ -205,7 +221,12 @@ export default function SiteHeader() {
                       </>
                     ) : (
                       <>
-                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(0, 0, 0, 0.05)",
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
                           <Link
                             href="/signup"
                             className="block px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"
@@ -214,7 +235,12 @@ export default function SiteHeader() {
                             Sign Up
                           </Link>
                         </motion.div>
-                        <motion.div whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }} transition={{ duration: 0.2 }}>
+                        <motion.div
+                          whileHover={{
+                            backgroundColor: "rgba(0, 0, 0, 0.05)",
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
                           <Link
                             href="/login"
                             className="block px-4 py-2 text-sm text-neutral-900 hover:bg-neutral-900/5 transition-colors duration-200"

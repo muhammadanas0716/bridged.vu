@@ -22,14 +22,14 @@ export default function TermsPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-neutral-900 mb-4">1. Acceptance of Terms</h2>
               <p className="text-neutral-700 mb-4">
-                By accessing and using FounderDiary ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
+                By accessing and using Bridged.vu ("the Service"), you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-neutral-900 mb-4">2. Description of Service</h2>
               <p className="text-neutral-700 mb-4">
-                FounderDiary is an open-source platform where founders can share their SaaS story and daily progress. The Service allows users to create profiles, share project updates, and connect with other entrepreneurs in the community.
+                Bridged.vu is an open-source platform where founders can share their story and daily progress. The Service allows users to create profiles, share project updates, and connect with other entrepreneurs in the community.
               </p>
             </section>
 
@@ -65,17 +65,17 @@ export default function TermsPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-neutral-900 mb-4">5. Open Source License</h2>
               <p className="text-neutral-700 mb-4">
-                FounderDiary is released under the MIT License. The source code is available on GitHub and you are free to use, modify, and distribute the code in accordance with the MIT License terms. However, this does not grant you rights to use the FounderDiary name, logo, or branding without permission.
+                Bridged.vu is released under the MIT License. The source code is available on GitHub and you are free to use, modify, and distribute the code in accordance with the MIT License terms. However, this does not grant you rights to use the Bridged.vu name, logo, or branding without permission.
               </p>
             </section>
 
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-neutral-900 mb-4">6. Intellectual Property</h2>
               <p className="text-neutral-700 mb-4">
-                You retain ownership of content you create and share on the Service. By posting content, you grant FounderDiary a non-exclusive, royalty-free, worldwide license to use, display, and distribute your content in connection with the Service.
+                You retain ownership of content you create and share on the Service. By posting content, you grant Bridged.vu a non-exclusive, royalty-free, worldwide license to use, display, and distribute your content in connection with the Service.
               </p>
               <p className="text-neutral-700 mb-4">
-                The FounderDiary name, logo, and original design elements are protected by intellectual property laws and may not be used without permission.
+                The Bridged.vu name, logo, and original design elements are protected by intellectual property laws and may not be used without permission.
               </p>
             </section>
 
@@ -110,7 +110,7 @@ export default function TermsPage() {
             <section className="mb-8">
               <h2 className="text-2xl font-semibold text-neutral-900 mb-4">11. Limitation of Liability</h2>
               <p className="text-neutral-700 mb-4">
-                IN NO EVENT SHALL FOUNDERDIARY BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM YOUR USE OF THE SERVICE.
+                IN NO EVENT SHALL BRIDGED.VU BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM YOUR USE OF THE SERVICE.
               </p>
             </section>
 

@@ -1,10 +1,11 @@
-"use client";
-
 import "./globals.css";
 import Link from "next/link";
 import { ReactNode } from "react";
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
+import NotificationsProvider from "@/components/notifications";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
   children,
@@ -27,11 +28,15 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#faf3e0] text-neutral-900 antialiased flex flex-col">
-        <SiteHeader />
-        <main className="container mx-auto max-w-5xl p-4 md:p-6 flex-grow">
-          {children}
-        </main>
-        <SiteFooter />
+        <NotificationsProvider>
+          <SiteHeader />
+          <main className="container mx-auto max-w-5xl p-4 md:p-6 flex-grow">
+            {children}
+          </main>
+          <SiteFooter />
+          <Analytics />
+          <SpeedInsights />
+        </NotificationsProvider>
       </body>
     </html>
   );
