@@ -20,6 +20,7 @@
     "next": "latest",
     "postcss": "^8.5.6",
     "postgres": "^3.4.4",
+    "resend": "^4.0.0",
     "react": "latest",
     "react-dom": "latest"
   },

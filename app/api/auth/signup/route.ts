@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSession, createUser, findUserByEmail } from "@/lib/auth";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,10 +21,11 @@ export async function POST(req: NextRequest) {
 
     const user = await createUser({ email, password, name, handle });
     await createSession(user.id);
+    // fire-and-forget welcome email (await is fine but don't fail signup if it throws)
+    sendWelcomeEmail({ to: user.email, name: user.name, handle: user.handle }).catch(() => {});
     return NextResponse.json({ user: { id: user.id, email: user.email, name: user.name, handle: user.handle } }, { status: 201 });
   } catch (err) {
     console.error("/api/auth/signup error", err);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
-

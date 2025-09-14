@@ -16,7 +16,6 @@ type FeedItem = {
   startup_name: string;
   startup_slug: string;
   startup_website_url?: string | null;
-  startup_logo_url?: string | null;
   author_id: string;
   author_handle: string;
   author_name: string | null;
@@ -114,17 +113,7 @@ export default function Feed() {
                 <UpvoteButton targetType="issue" targetId={i.id} initialCount={i.upvotes || 0} disabled={!isAuthed} />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-3">
-                  {i.startup_logo_url && (
-                    <img
-                      src={normUrl(i.startup_logo_url)}
-                      alt={`${i.startup_name} logo`}
-                      className="size-7 rounded-md border border-neutral-900/20 bg-white object-cover"
-                      loading="lazy"
-                    />
-                  )}
-                  <div className="font-medium text-neutral-900 truncate">{i.title}</div>
-                </div>
+                <div className="font-medium text-neutral-900 truncate">{i.title}</div>
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-neutral-800/70">
                   <Link href={`/u/${i.author_handle}`} className="hover:underline">@{i.author_handle}</Link>
                   <FollowInline
