@@ -136,7 +136,7 @@ export default function SiteHeader() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            style={{ justifySelf: 'end' }}
+            style={{ justifySelf: "end" }}
           >
             {/* Account Dropdown */}
             <div className="relative">
@@ -260,26 +260,6 @@ export default function SiteHeader() {
             </div>
 
             <div className="flex items-center gap-2">
-              <motion.div
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Link
-                  href="/nonprofit"
-                  className="
-                    inline-flex items-center gap-2
-                    rounded-xl border border-neutral-900/40
-                    px-3 py-1.5 text-sm lg:text-[0.95rem]
-                    hover:bg-neutral-900/5 hover:border-neutral-900/60
-                    transition-all duration-200
-                  "
-                  aria-label="Nonprofit Status"
-                  title="Nonprofit Status"
-                >
-                  <span>Our Non profit Status</span>
-                </Link>
-              </motion.div>
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
