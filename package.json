@@ -5,15 +5,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.8",
-    "@neondatabase/serverless": "^1.0.1",
+    "dotenv": "^16.4.5",
     "@tailwindcss/postcss": "^4.1.12",
     "bcryptjs": "^3.0.2",
     "canvas-confetti": "^1.9.3",
     "framer-motion": "^12.23.12",
+    "postgres": "^3.4.4",
     "next": "latest",
     "postcss": "^8.5.6",
     "react": "latest",
