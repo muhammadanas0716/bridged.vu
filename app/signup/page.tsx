@@ -102,7 +102,7 @@ export default function SignupPage() {
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
               >
                 <Image
-                  src="/logo.png"
+                  src="https://lh3.googleusercontent.com/d/1s8UmrFf3NmDy_4QR4_jjXedwxiTtPXsQ"
                   alt="Bridged.vu logo"
                   width={48}
                   height={48}
