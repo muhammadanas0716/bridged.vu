@@ -262,7 +262,7 @@ export default function SiteHeader() {
               transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
               <Link
-                href="https://github.com/your-org/your-repo"
+                href="https://github.com/muhammadanas0716/bridged.vu"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="
