@@ -6,8 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "node scripts/migrate.mjs",
-    "generate:dummy": "node scripts/generate-dummy-feed.mjs"
+    "migrate": "node scripts/migrate.mjs"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.31.8",
