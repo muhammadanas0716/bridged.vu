@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="./public/logo.png" alt="Bridged.vu" width="220" style="border-radius: 10px;"/>
-</p>
-
 # Bridged.vu
 
 Bridge the gap between users and founders early on. Share concise updates, grow an audience from day one, and build in public with signal over noise.

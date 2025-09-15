@@ -25,6 +25,7 @@ type FeedItem = {
 };
 
 export default function Feed() {
+  const USE_DUMMY = process.env.NEXT_PUBLIC_DUMMY_FEED === '1';
   const [mode, setMode] = useState<Mode>("all");
   const [items, setItems] = useState<FeedItem[]>([]);
   const [offset, setOffset] = useState(0);
@@ -57,9 +58,18 @@ export default function Feed() {
     setLoading(true);
     try {
       const currentOffset = reset ? 0 : offset;
-      const res = await fetch(`/api/feed?mode=${mode}&limit=${limit}&offset=${currentOffset}`);
-      const data = await res.json();
-      const newItems: FeedItem[] = data.items || [];
+      let newItems: FeedItem[] = [];
+      if (USE_DUMMY) {
+        const res = await fetch('/dummy-feed.json', { cache: 'no-store' });
+        const data = await res.json();
+        const all: FeedItem[] = (data.items || []) as FeedItem[];
+        const filtered = mode === 'following' ? all.filter((x) => x.is_following) : all;
+        newItems = filtered.slice(currentOffset, currentOffset + limit);
+      } else {
+        const res = await fetch(`/api/feed?mode=${mode}&limit=${limit}&offset=${currentOffset}`);
+        const data = await res.json();
+        newItems = data.items || [];
+      }
       if (reset) {
         setItems(newItems);
       } else {
@@ -112,7 +122,7 @@ export default function Feed() {
             <div className="p-4 md:p-5 h-full flex flex-col">
               <div className="flex items-start gap-3">
                 <div className="shrink-0">
-                  <UpvoteButton targetType="issue" targetId={i.id} initialCount={i.upvotes || 0} disabled={!isAuthed} />
+                  <UpvoteButton targetType="issue" targetId={i.id} initialCount={i.upvotes || 0} disabled={!isAuthed || USE_DUMMY} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="font-medium text-neutral-900 truncate">{i.title}</div>
@@ -129,7 +139,11 @@ export default function Feed() {
                       }}
                     />
                     <span>·</span>
-                    <Link href={`/p/${i.startup_slug}`} className="hover:underline">{i.startup_name}</Link>
+                    {!USE_DUMMY ? (
+                      <Link href={`/p/${i.startup_slug}`} className="hover:underline">{i.startup_name}</Link>
+                    ) : (
+                      <span className="text-neutral-900/80">{i.startup_name}</span>
+                    )}
                     <span>·</span>
                     <span>#{i.issue_number}</span>
                     <span>·</span>
@@ -142,7 +156,7 @@ export default function Feed() {
                 dangerouslySetInnerHTML={{ __html: toHtml(i.content || '', { inline: true }) }}
               />
               <div className="mt-4 flex items-center gap-2">
-                {i.startup_website_url && (
+                {!USE_DUMMY && i.startup_website_url && (
                   <a
                     href={normUrl(i.startup_website_url)}
                     target="_blank"
@@ -152,7 +166,9 @@ export default function Feed() {
                     Visit website
                   </a>
                 )}
-                <Link href={`/p/${i.startup_slug}`} className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 text-sm">View</Link>
+                {!USE_DUMMY && (
+                  <Link href={`/p/${i.startup_slug}`} className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 text-sm">View</Link>
+                )}
               </div>
             </div>
           </motion.div>
@@ -190,6 +206,8 @@ function timeAgo(iso: string) {
 }
 
 async function toggleFollow(authorId: string) {
+  const USE_DUMMY = process.env.NEXT_PUBLIC_DUMMY_FEED === '1';
+  if (USE_DUMMY) return true; // local toggle only
   try {
     const res = await fetch('/api/follow', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ following_user_id: authorId }) });
     if (!res.ok) return false;
