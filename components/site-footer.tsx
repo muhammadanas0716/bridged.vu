@@ -67,11 +67,18 @@ export default function SiteFooter() {
           transition={{ duration: 0.2, delay: 0.2 }}
         >
           <p className="text-neutral-700/80 text-[10px] sm:text-xs mb-1">
-            bridged.vu is fiscally sponsored by The Hack Foundation (dba Hack Club), a 501(c)(3) public charity, EIN 81-2908499. <Link href="/nonprofit" className="underline">Learn more</Link>.
+            bridged.vu is fiscally sponsored by The Hack Foundation (dba Hack
+            Club), a 501(c)(3) public charity, EIN 81-2908499.{" "}
+            <Link href="/nonprofit" className="underline">
+              Learn more
+            </Link>
+            .
           </p>
           <p className="text-neutral-600 text-[10px] sm:text-xs">
             made with <span className="text-red-500">❤️</span>{" "}
-            <span className="font-medium text-neutral-900">anas</span>
+            <span className="font-medium text-neutral-900">
+              anas & community
+            </span>
           </p>
         </motion.div>
       </div>

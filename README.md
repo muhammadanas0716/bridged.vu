@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./public/logo.png" alt="Bridged.vu" width="220" />
+</p>
+
 # Bridged.vu
 
 Bridge the gap between users and founders early on. Share concise updates, grow an audience from day one, and build in public with signal over noise.
@@ -6,7 +10,7 @@ Bridge the gap between users and founders early on. Share concise updates, grow 
   <img src="https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js" alt="Next.js"/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
   <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="TailwindCSS"/>
-  <img src="https://img.shields.io/badge/Supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase"/>
+  <img src="https://img.shields.io/badge/Postgres-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres"/>
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="MIT License"/>
   <br/>
   <img src="https://img.shields.io/badge/Analytics-Vercel-blue?style=flat" alt="Vercel Analytics"/>
@@ -14,15 +18,24 @@ Bridge the gap between users and founders early on. Share concise updates, grow 
   <img src="https://img.shields.io/badge/Migrations-SQL-lightgrey?style=flat" alt="SQL migrations"/>
 </p>
 
+<p align="center">
+  <img src="./public/homescreen.png" alt="Bridged.vu home screen" width="1200" />
+</p>
+
 ## Features
 
 - Auth with email + password (bcrypt, secure session cookie)
 - Founder dashboard: create startups and publish numbered “issues” (updates)
-- Public feed (All / Following) with Product Hunt–style cards and upvotes
-- Startup pages with updates and upvoting; profile pages with follow
-- Notifications and confetti on publish/create
-- Supabase Postgres with SQL migrations (no ORM)
+- Public feed (All / Following) with upvotes and follows
+- Startup pages with updates; profile pages with follow
+- Notifications and confetti for delightful feedback loops
+- Postgres with plain SQL migrations (no ORM)
 - Vercel Analytics and Speed Insights
+
+## Requirements
+
+- Node.js 18+ and npm
+- A Postgres database (Supabase Postgres works great)
 
 ## Quickstart
 
@@ -43,13 +56,14 @@ Visit http://localhost:3000.
 
 ## Environment
 
-Configure `.env.local` using the template in `.env.example`. Key variables:
+Copy `.env.example` to `.env.local` and fill in values. Key variables:
 
-- `POSTGRES_URL` (Supabase pooled connection; 6543)
-- `POSTGRES_URL_NON_POOLING` (5432)
-- `SUPABASE_URL`, `SUPABASE_ANON_KEY` (optional if you integrate RLS/edge)
+- `POSTGRES_URL` — pooled connection string (recommended in serverless)
+- `POSTGRES_URL_NON_POOLING` — direct connection (local/dev)
+- `NEXT_PUBLIC_SITE_URL` — e.g. `http://localhost:3000`
+- Optional: `SUPABASE_URL`, `SUPABASE_ANON_KEY` if you later add RLS/edge features
 
-This project connects directly to Postgres using the `postgres` driver. SSL is enabled with relaxed verification for common local setups.
+The app connects directly to Postgres using the `postgres` driver. SSL uses relaxed verification to work in common local/dev environments.
 
 ## Migrations
 
@@ -70,10 +84,10 @@ No ORM is used; we keep the schema explicit and easy to audit.
 
 ## Architecture
 
-- Next.js App Router (server components where possible)
+- Next.js App Router
 - Client components for interactive areas (forms, feed, upvotes)
-- `lib/db.ts` for the database client
-- `lib/auth.ts` for user creation, hashing, sessions
+- `lib/db.ts` — database client
+- `lib/auth.ts` — user creation, hashing, sessions
 - REST-style API routes under `app/api/**`
 
 ## Key Routes
@@ -83,6 +97,12 @@ No ORM is used; we keep the schema explicit and easy to audit.
 - `/p/[slug]` — Startup page + updates + upvote
 - `/u/[handle]` — Profile + follow
 - `/login`, `/signup`
+
+## Deploy
+
+- One‑click deploy to Vercel and set `.env` from your local `.env.example` values
+- Ensure `POSTGRES_URL` or `POSTGRES_URL_NON_POOLING` is set (Supabase recommended)
+- Add optional `NEXT_PUBLIC_GA_MEASUREMENT_ID` or `NEXT_PUBLIC_GSC_VERIFICATION`
 
 ## Scripts
 
