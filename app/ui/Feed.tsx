@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { toHtml } from "@/lib/markdown";
 import UpvoteButton from "./UpvoteButton";
 
 type Mode = "all" | "following";
@@ -136,7 +137,10 @@ export default function Feed() {
                   </div>
                 </div>
               </div>
-              <p className="text-sm mt-3 text-neutral-900/90 line-clamp-3">{i.content}</p>
+              <div
+                className="text-sm mt-3 text-neutral-900/90 line-clamp-3"
+                dangerouslySetInnerHTML={{ __html: toHtml(i.content || '', { inline: true }) }}
+              />
               <div className="mt-4 flex items-center gap-2">
                 {i.startup_website_url && (
                   <a
