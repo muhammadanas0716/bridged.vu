@@ -119,3 +119,31 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized or invalid" }, { status: 401 });
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const user = await requireUser();
+    await ensureSchema();
+    const body = await req.json();
+    const id = String(body.id || "");
+    if (!id) return NextResponse.json({ error: "Missing startup id" }, { status: 400 });
+
+    const owned = (await sql`SELECT 1 FROM startups WHERE id = ${id} AND user_id = ${user.id} LIMIT 1;`) as any[];
+    if (owned.length === 0) return NextResponse.json({ error: "Not found or not allowed" }, { status: 404 });
+
+    // Use a transaction to keep things tidy
+    await (sql as any).begin(async (tx: any) => {
+      // Remove upvotes for issues belonging to this startup
+      await tx`DELETE FROM upvotes WHERE target_type = 'issue'::vote_target AND target_id IN (SELECT id FROM issues WHERE startup_id = ${id});`;
+      // Remove upvotes directly on this startup
+      await tx`DELETE FROM upvotes WHERE target_type = 'startup'::vote_target AND target_id = ${id};`;
+      // Delete the startup (will cascade to issues and slug redirects)
+      await tx`DELETE FROM startups WHERE id = ${id};`;
+    });
+
+    return NextResponse.json({ ok: true, deleted_id: id });
+  } catch (err) {
+    console.error("DELETE /api/startups error", err);
+    return NextResponse.json({ error: "Unauthorized or invalid" }, { status: 401 });
+  }
+}

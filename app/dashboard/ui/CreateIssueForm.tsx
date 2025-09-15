@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNotifications } from "@/components/notifications";
 
@@ -13,6 +13,13 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
   const [content, setContent] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+
+  // Keep selected startup in sync when list changes
+  useEffect(() => {
+    if (!startupId || !startups.some((s) => s.id === startupId)) {
+      setStartupId(startups[0]?.id || "");
+    }
+  }, [startups]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

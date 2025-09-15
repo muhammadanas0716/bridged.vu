@@ -4,7 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { useNotifications } from "@/components/notifications";
 
-export default function CreateStartupForm() {
+export default function CreateStartupForm({ onCreated }: { onCreated?: (startup: any) => void }) {
   const { notify } = useNotifications();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -32,6 +32,7 @@ export default function CreateStartupForm() {
         notify({ title: "Failed to create startup", description: data.error || undefined, type: "error" });
       } else {
         notify({ title: "Startup created", description: data.startup.name, type: "success" });
+        if (onCreated) onCreated(data.startup);
         setName("");
         setDescription("");
         setWebsite("");

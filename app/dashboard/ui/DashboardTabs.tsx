@@ -12,18 +12,32 @@ type User = { id: string; email: string; name?: string | null; handle?: string |
 
 export default function DashboardTabs({ user, startups, issues }: { user: User; startups: Startup[]; issues: Issue[] }) {
   const [tab, setTab] = useState<"overview" | "startups" | "profile">("overview");
+  // Local state so newly created startups reflect immediately in the UI
+  const [startupsState, setStartupsState] = useState<Startup[]>(startups);
   return (
     <div className="space-y-8">
       <TabBar tab={tab} onChange={setTab} />
       <AnimatePresence mode="wait">
         {tab === "overview" && (
           <motion.div key="overview" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
-            <Overview startups={startups} issues={issues} />
+            <Overview
+              startups={startupsState}
+              issues={issues}
+              onStartupCreated={(s) => setStartupsState((prev) => [s, ...prev])}
+            />
           </motion.div>
         )}
         {tab === "startups" && (
           <motion.div key="startups" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>
-            <StartupsManager startups={startups} />
+            <StartupsManager
+              startups={startupsState}
+              onStartupUpdated={(updated) =>
+                setStartupsState((prev) => prev.map((s) => (s.id === updated.id ? { ...s, ...updated, upvotes: s.upvotes } : s)))
+              }
+              onStartupDeleted={(deletedId) =>
+                setStartupsState((prev) => prev.filter((s) => s.id !== deletedId))
+              }
+            />
           </motion.div>
         )}
         {tab === "profile" && (
@@ -57,12 +71,12 @@ function TabBar({ tab, onChange }: { tab: string; onChange: (t: any) => void }) 
   );
 }
 
-function Overview({ startups, issues }: { startups: Startup[]; issues: Issue[] }) {
+function Overview({ startups, issues, onStartupCreated }: { startups: Startup[]; issues: Issue[]; onStartupCreated: (s: Startup) => void }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
         <h2 className="text-lg font-medium mb-3">Create a Startup</h2>
-        <CreateStartupForm />
+        <CreateStartupForm onCreated={onStartupCreated} />
       </div>
       <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
         <h2 className="text-lg font-medium mb-3">Write an Update</h2>
@@ -99,7 +113,7 @@ function Overview({ startups, issues }: { startups: Startup[]; issues: Issue[] }
   );
 }
 
-function StartupsManager({ startups }: { startups: Startup[] }) {
+function StartupsManager({ startups, onStartupUpdated, onStartupDeleted }: { startups: Startup[]; onStartupUpdated: (s: Startup) => void; onStartupDeleted: (id: string) => void }) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<{ name: string; description: string; website_url: string; logo_url: string }>({ name: "", description: "", website_url: "", logo_url: "" });
   const { notify } = useNotifications();
@@ -115,7 +129,26 @@ function StartupsManager({ startups }: { startups: Startup[] }) {
     if (!res.ok) notify({ title: 'Failed to update startup', description: data.error || undefined, type: 'error' });
     else {
       notify({ title: 'Startup updated', description: data.startup.name, type: 'success' });
+      onStartupUpdated(data.startup);
       setEditingId(null);
+    }
+  }
+
+  async function remove(id: string) {
+    if (!id) return;
+    const ok = typeof window !== 'undefined' ? window.confirm('Delete this startup and all its updates? This cannot be undone.') : true;
+    if (!ok) return;
+    try {
+      const res = await fetch('/api/startups', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+      const data = await res.json();
+      if (!res.ok) notify({ title: 'Failed to delete startup', description: data.error || undefined, type: 'error' });
+      else {
+        notify({ title: 'Startup deleted', type: 'success' });
+        onStartupDeleted(id);
+        if (editingId === id) setEditingId(null);
+      }
+    } catch (e) {
+      notify({ title: 'Failed to delete startup', type: 'error' });
     }
   }
 
@@ -133,6 +166,7 @@ function StartupsManager({ startups }: { startups: Startup[] }) {
               <div className="flex items-center gap-2">
                 <a href={`/p/${s.slug}`} className="text-sm underline underline-offset-2">Manage issues</a>
                 <button className="text-sm rounded-lg border px-3 py-1 hover:bg-neutral-900/5" onClick={() => startEdit(s)}>Edit</button>
+                <button className="text-sm rounded-lg border px-3 py-1 hover:bg-red-50 text-red-600 border-red-200" onClick={() => remove(s.id)}>Delete</button>
               </div>
             </div>
             {editingId === s.id && (
@@ -233,4 +267,3 @@ function ProfileForm({ user }: { user: User }) {
     </div>
   );
 }
-
