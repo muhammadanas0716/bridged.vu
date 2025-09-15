@@ -112,8 +112,11 @@ export default function Feed() {
           </button>
         </div>
       </div>
-      <p className="text-neutral-800/80 text-sm">
-        {mode === "all" ? "Latest updates from founders." : canUseFollowing ? "Updates from founders you follow." : "Sign in to see followed creators."}
+      <p className="text-neutral-800/80 text-sm flex items-center gap-2">
+        <span>{mode === "all" ? "Latest updates from founders." : canUseFollowing ? "Updates from founders you follow." : "Sign in to see followed creators."}</span>
+        {USE_DUMMY && (
+          <span className="inline-flex items-center rounded-full border border-neutral-900/20 bg-white/60 px-2 py-0.5 text-[11px] text-neutral-900">Demo data</span>
+        )}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

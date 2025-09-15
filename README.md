@@ -94,6 +94,24 @@ No ORM is used; we keep the schema explicit and easy to audit.
 - `/u/[handle]` — Profile + follow
 - `/login`, `/signup`
 
+## Demo Data (no DB needed)
+
+Want a realistic feed without touching the database?
+
+- Generate demo JSON:
+
+  ```bash
+  npm run generate:dummy
+  ```
+
+- Enable demo mode by adding to `.env.local`:
+
+  ```ini
+  NEXT_PUBLIC_DUMMY_FEED=1
+  ```
+
+This serves `public/dummy-feed.json` in the home feed with ~50–60 posts across 9–10 startups, random upvotes, and timestamps spread over ~30 days. Actions like upvote/follow and deep links to project pages are disabled in demo mode.
+
 ## Deploy
 
 - One‑click deploy to Vercel and set `.env` from your local `.env.example` values
