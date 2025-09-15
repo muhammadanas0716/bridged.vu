@@ -72,6 +72,17 @@ function TabBar({ tab, onChange }: { tab: string; onChange: (t: any) => void }) 
 }
 
 function Overview({ startups, issues, onStartupCreated }: { startups: Startup[]; issues: Issue[]; onStartupCreated: (s: Startup) => void }) {
+  const [page, setPage] = useState(1);
+  const perPage = 4;
+  const totalPages = Math.max(1, Math.ceil((issues?.length || 0) / perPage));
+  const start = (page - 1) * perPage;
+  const pageItems = (issues || []).slice(start, start + perPage);
+
+  // Clamp page if issues change
+  if (page > totalPages) {
+    setPage(totalPages);
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
@@ -100,7 +111,7 @@ function Overview({ startups, issues, onStartupCreated }: { startups: Startup[];
       <div className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
         <h3 className="text-base font-medium mb-3">Recent Updates</h3>
         <ul className="space-y-3">
-          {issues.map((i) => (
+          {pageItems.map((i) => (
             <li key={i.id}>
               <div className="text-sm text-neutral-800/70">{i.startup_name} · #{i.issue_number}</div>
               <div className="font-medium">{i.title}</div>
@@ -108,6 +119,25 @@ function Overview({ startups, issues, onStartupCreated }: { startups: Startup[];
           ))}
           {issues.length === 0 && <li className="text-sm text-neutral-800/70">No updates yet</li>}
         </ul>
+        {issues.length > 0 && totalPages > 1 && (
+          <div className="mt-3 flex items-center justify-between gap-2 text-sm">
+            <button
+              className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 disabled:opacity-50"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page <= 1}
+            >
+              Prev
+            </button>
+            <span className="text-neutral-800/70">Page {page} of {totalPages}</span>
+            <button
+              className="px-3 py-1.5 rounded-lg border border-neutral-900/20 hover:bg-neutral-900/5 disabled:opacity-50"
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page >= totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

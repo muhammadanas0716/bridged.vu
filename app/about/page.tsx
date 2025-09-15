@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -136,21 +137,51 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* Principles */}
+        {/* About Me */}
         <section className="mt-10">
-          <h2 className="text-xl md:text-2xl font-semibold text-neutral-900">
-            Principles
-          </h2>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {principles.map((p, i) => (
-              <Card key={i}>
-                <div className="text-xl" aria-hidden>
-                  {p.icon}
+          <h2 className="text-xl md:text-2xl font-semibold text-neutral-900">About Me</h2>
+          <div className="mt-4 grid gap-4 md:grid-cols-2 items-center">
+            <div className="rounded-2xl overflow-hidden border border-neutral-900/15 bg-white/70">
+              <Image
+                src="/profile.png"
+                alt="Muhammad Anas"
+                width={900}
+                height={900}
+                className="w-full h-auto object-cover"
+                priority
+              />
+            </div>
+            <div className="rounded-2xl border border-neutral-900/15 bg-white/70 p-5">
+              <div className="space-y-3 text-sm text-neutral-800/90">
+                <p className="text-base text-neutral-900">
+                  Hi, I’m <span className="font-medium">Muhammad Anas</span> — a 16‑year‑old developer based in Abu Dhabi.
+                </p>
+                <p>
+                  I’ve been building since I was 12. I love ML, open‑source tools, dev‑productivity things, and I’m super into finance and quant.
+                  I absolutely love math and, well, physics and I have an "it’s complicated" relationship.
+                </p>
+                <p className="italic text-neutral-700">
+                  Little joke break: If my code compiles on the first try, I get suspicious. If it’s physics, I get flashbacks.
+                </p>
+                <p>
+                  I’m shipping small, learning fast, and building tools I wish existed. If you’ve got feedback or ideas, I’m all ears.
+                </p>
+                <div className="pt-2 flex flex-wrap gap-2">
+                  <CTA href="https://github.com/muhammadanas0716" secondary external>
+                    GitHub
+                  </CTA>
+                  <CTA href="https://www.linkedin.com/in/muhammadanas0716/" secondary external>
+                    LinkedIn
+                  </CTA>
+                  <CTA href="https://x.com/MuhammadAnas707" secondary external>
+                    X
+                  </CTA>
+                  <CTA href="https://bridged.vu" secondary external>
+                    Bridged.vu
+                  </CTA>
                 </div>
-                <div className="mt-2 font-medium text-neutral-900">{p.title}</div>
-                <p className="mt-1 text-sm text-neutral-800/85">{p.desc}</p>
-              </Card>
-            ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -173,8 +204,8 @@ export default function AboutPage() {
         <section className="mt-10">
           <div className="rounded-2xl border border-neutral-900/15 bg-white/70 p-5">
             <div className="flex items-center gap-4">
-              <div className="flex size-10 items-center justify-center rounded-full border border-neutral-900/15 bg-white text-base font-semibold">
-                B
+              <div className="flex size-12 items-center justify-center rounded-full border border-neutral-900/15 bg-white overflow-hidden">
+                <Image src="/logo.png" alt="Bridged.vu logo" width={48} height={48} className="object-contain" />
               </div>
               <div className="flex-1">
                 <div className="font-medium text-neutral-900">Bridged.vu</div>
@@ -319,13 +350,4 @@ const howItWorks = [
   },
 ] as const;
 
-const principles = [
-  {
-    title: "Authenticity",
-    desc: "Honest progress over marketing fluff.",
-    icon: "🪞",
-  },
-  { title: "Signal", desc: "Small, frequent updates > long, rare posts.", icon: "🔎" },
-  { title: "Ownership", desc: "Your updates, your audience.", icon: "🔑" },
-  { title: "Openness", desc: "Follow, upvote, and learn together.", icon: "🤝" },
-] as const;
+// (Principles removed per request; replaced with personal About Me section)
