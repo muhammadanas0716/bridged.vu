@@ -48,7 +48,6 @@ export async function sendWelcomeEmail(params: {
           <li>Share your page and invite early supporters</li>
         </ol>
         <a class="btn" href="${dashboardUrl}">Open Dashboard</a>
-        <p class="muted mt">Your profile: <a href="${profileUrl}">${profileUrl}</a></p>
         <h2 style="font-size:16px;margin:20px 0 8px">Open source, together</h2>
         <p class="muted">Bridged.vu is open source so founders and developers can learn, iterate, and contribute improvements openly. If you find gaps or have ideas, we welcome PRs and issues.</p>
         <p class="muted">Happy building,<br/>Anas — maintainer</p>
