@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNotifications } from "@/components/notifications";
+import RichTextEditor from "./RichTextEditor";
 
 type Startup = { id: string; name: string; slug: string };
 
@@ -70,7 +71,11 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
       </div>
       <div>
         <label className="block text-sm mb-1">Content</label>
-        <textarea value={content} onChange={(e) => setContent(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-neutral-900/30 bg-white/70" rows={5} placeholder="Short update..." />
+        <RichTextEditor value={content} onChange={setContent} />
+        <p className="mt-1 text-xs text-neutral-700">
+          Tips: Use <code>**bold**</code>, <code>_italic_</code>, <code>~~strike~~</code>, <code>++underline++</code>,
+          lists (<code>-</code> or <code>1.</code>), code (<code>`inline`</code> or <code>```block```</code>), and links <code>[text](https://...)</code>.
+        </p>
       </div>
       <div>
         <motion.button type="submit" className="px-4 py-2 rounded-lg bg-neutral-900 text-white hover:bg-neutral-800" whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} disabled={submitting || startups.length === 0}>

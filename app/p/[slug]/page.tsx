@@ -1,6 +1,7 @@
 import { ensureSchema, sql } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import UpvoteButton from "./ui/UpvoteButton";
+import { toHtml } from "@/lib/markdown";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -67,7 +68,10 @@ export default async function StartupPage({ params }: { params: Promise<{ slug: 
             <li key={i.id} className="p-4 rounded-xl border border-neutral-900/20 bg-white/50">
               <div className="text-sm text-neutral-800/70">#{i.issue_number}</div>
               <div className="font-medium">{i.title}</div>
-              <p className="text-sm mt-1 whitespace-pre-wrap">{i.content}</p>
+              <div
+                className="text-sm mt-1 prose prose-neutral max-w-none"
+                dangerouslySetInnerHTML={{ __html: toHtml(i.content || "") }}
+              />
             </li>
           ))}
           {issues.length === 0 && (
