@@ -6,13 +6,6 @@ import Link from "next/link";
 export default function AboutPage() {
   return (
     <div className="relative min-h-[calc(100vh-200px)] py-12">
-      {/* Decorative background */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10"
-      >
-        <div className="absolute left-1/2 top-6 h-64 w-64 -translate-x-1/2 rounded-full bg-gradient-to-b from-neutral-900/10 to-transparent blur-3xl" />
-      </div>
 
       <motion.div
         className="mx-auto max-w-5xl px-4 md:px-6"
@@ -20,22 +13,68 @@ export default function AboutPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
       >
-        {/* Hero */}
-        <div className="mb-10 rounded-2xl border border-neutral-900/15 bg-white/70 p-6">
-          <div className="flex flex-wrap gap-2">
-            <Chip>Open‑source</Chip>
-            <Chip>Nonprofit‑backed</Chip>
-            <Chip>Built for early‑stage</Chip>
+        {/* Hero (dark gradient like home) */}
+        <section className="relative mb-10 overflow-hidden rounded-3xl border border-neutral-900/20 bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
+          {/* Ambient orbs */}
+          <div className="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-amber-400/20 blur-3xl" />
+
+          <div className="relative p-6 md:p-10">
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+              <span className="inline-flex flex-wrap items-center gap-1.5 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs md:text-sm">
+                <span>Open‑source</span>
+                <span aria-hidden>•</span>
+                <span>Nonprofit‑backed</span>
+                <span aria-hidden>•</span>
+                <span>Built for early‑stage</span>
+              </span>
+            </motion.div>
+            <motion.h1
+              className="mt-4 text-3xl md:text-5xl font-semibold tracking-tight"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              About Bridged.vu
+            </motion.h1>
+            <motion.p
+              className="mt-3 md:mt-4 max-w-3xl text-sm md:text-base text-white/80"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+            >
+              Bridge the gap between users and founders early on. Share concise updates, grow an audience from day one, and build in public with signal over noise.
+            </motion.p>
+
+            <motion.div
+              className="mt-5 flex flex-wrap items-center gap-3"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              <Link
+                href="/signup"
+                className="inline-flex items-center gap-2 rounded-xl bg-white text-neutral-900 px-4 py-2 font-medium hover:bg-white/90 transition-colors"
+              >
+                Get Started
+              </Link>
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-4 py-2 font-medium hover:bg-white/10 transition-colors"
+              >
+                Explore the Feed
+              </Link>
+              <a
+                href="https://github.com/muhammadanas0716/bridged.vu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-4 py-2 font-medium hover:bg-white/10 transition-colors"
+              >
+                View Source
+              </a>
+            </motion.div>
           </div>
-          <h1 className="mt-3 text-3xl md:text-5xl font-semibold tracking-tight text-neutral-900">
-            About Bridged.vu
-          </h1>
-          <p className="mt-3 text-neutral-800/85 text-base md:text-lg max-w-3xl">
-            Bridge the gap between users and founders early on. Share concise
-            updates, grow an audience from day one, and build in public with
-            signal over noise.
-          </p>
-        </div>
+        </section>
 
         {/* Highlights */}
         <section className="grid gap-4 md:grid-cols-3">
