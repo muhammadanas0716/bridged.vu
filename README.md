@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/logo.png" alt="Bridged.vu" width="220" />
+  <img src="./public/logo.png" alt="Bridged.vu" width="220" style="border-radius: 10px;"/>
 </p>
 
 # Bridged.vu
