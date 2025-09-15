@@ -31,7 +31,7 @@ export default async function HomePage() {
     <div className="space-y-8">
       <HomeHero isAuthed={!!user} stats={counts} />
 
-      <section
+      {/* <section
         id="how-it-works"
         className="grid grid-cols-1 md:grid-cols-3 gap-4"
       >
@@ -58,7 +58,7 @@ export default async function HomePage() {
           </a>
         </div>
         <Feed />
-      </section>
+      </section> */}
     </div>
   );
 }
