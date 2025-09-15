@@ -34,13 +34,26 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
       const res = await fetch("/api/issues", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ startup_id: startupId, title, content, publish: true }),
+        body: JSON.stringify({
+          startup_id: startupId,
+          title,
+          content,
+          publish: true,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
-        notify({ title: "Failed to publish update", description: data.error || undefined, type: "error" });
+        notify({
+          title: "Failed to publish update",
+          description: data.error || undefined,
+          type: "error",
+        });
       } else {
-        notify({ title: "Update published", description: `#${data.issue.issue_number}`, type: "success" });
+        notify({
+          title: "Update published",
+          description: `#${data.issue.issue_number}`,
+          type: "success",
+        });
         setTitle("");
         setContent("");
         try {
@@ -59,26 +72,39 @@ export default function CreateIssueForm({ startups }: { startups: Startup[] }) {
     <motion.form onSubmit={onSubmit} className="space-y-3">
       <div>
         <label className="block text-sm mb-1">Startup</label>
-        <select value={startupId} onChange={(e) => setStartupId(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-neutral-900/30 bg-white/70">
+        <select
+          value={startupId}
+          onChange={(e) => setStartupId(e.target.value)}
+          className="w-full px-3 py-2 rounded-lg border border-neutral-900/30 bg-white/70"
+        >
           {startups.map((s) => (
-            <option key={s.id} value={s.id}>{s.name}</option>
+            <option key={s.id} value={s.id}>
+              {s.name}
+            </option>
           ))}
         </select>
       </div>
       <div>
         <label className="block text-sm mb-1">Title</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full px-3 py-2 rounded-lg border border-neutral-900/30 bg-white/70" placeholder="Today I shipped..." />
+        <input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full px-3 py-2 rounded-lg border border-neutral-900/30 bg-white/70"
+          placeholder="Today I shipped..."
+        />
       </div>
       <div>
         <label className="block text-sm mb-1">Content</label>
         <RichTextEditor value={content} onChange={setContent} />
-        <p className="mt-1 text-xs text-neutral-700">
-          Tips: Use <code>**bold**</code>, <code>_italic_</code>, <code>~~strike~~</code>, <code>++underline++</code>,
-          lists (<code>-</code> or <code>1.</code>), code (<code>`inline`</code> or <code>```block```</code>), and links <code>[text](https://...)</code>.
-        </p>
       </div>
       <div>
-        <motion.button type="submit" className="px-4 py-2 rounded-lg bg-neutral-900 text-white hover:bg-neutral-800" whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} disabled={submitting || startups.length === 0}>
+        <motion.button
+          type="submit"
+          className="px-4 py-2 rounded-lg bg-neutral-900 text-white hover:bg-neutral-800"
+          whileHover={{ scale: 1.02, y: -2 }}
+          whileTap={{ scale: 0.98 }}
+          disabled={submitting || startups.length === 0}
+        >
           {submitting ? "Publishing..." : "Publish Update"}
         </motion.button>
       </div>
